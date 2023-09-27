@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            SaveGame();
             SceneManager.LoadScene("MainMenu");
         }
     }
@@ -31,7 +30,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            SaveGame();
             SceneManager.LoadScene("LevelOne");
         }
     }
@@ -45,7 +43,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            SaveGame();
             SceneManager.LoadScene("LevelTwo");
         }
     }
@@ -59,7 +56,6 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            SaveGame();
             SceneManager.LoadScene("LevelThree");
         }
     }
@@ -67,13 +63,31 @@ public class GameManager : MonoBehaviour
     // Calls the SaveGameManager to save the game
     public void SaveGame()
     {
+        if (Player.get == null)
+        {
+            Debug.Log("Player is null");
+            return;
+        }
+        if (SaveGameManager.get == null)
+        {
+            Debug.Log("SaveGameManager is null");
+            return;
+        }
         SaveGameManager.get.SavePlayerData(Player.get.score, Player.get.health, Player.get.lives, Player.get.gold, Player.get.speed);
     }
 
     // Calls the SaveGameManager to load the game
     public void LoadGame()
-    {
-        SaveGameManager.get.LoadPlayerData();
+    { 
+        PlayerData playerData = SaveGameManager.get.LoadPlayerData();
+
+        // Assigns the data to the player
+        Player.get.score = playerData.score;
+        Player.get.health = playerData.health;
+        Player.get.lives = playerData.lives;
+        Player.get.gold = playerData.gold;
+        Player.get.speed = playerData.speed;
+        
     }
     // Quits the application
     public void QuitGame()

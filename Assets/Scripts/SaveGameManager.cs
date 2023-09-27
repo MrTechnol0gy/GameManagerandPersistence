@@ -13,7 +13,11 @@ public class SaveGameManager : MonoBehaviour
 
     private void Awake()
     {
-        LoadPlayerData();
+        get = this;
+
+        // This line creates a new PlayerData object
+        // This object will hold the data we want to save
+        data = new PlayerData();
     }
     // This method saves the players information
     public void SavePlayerData(int score, int health, int lives, int gold, float speed)
@@ -21,14 +25,23 @@ public class SaveGameManager : MonoBehaviour
         // This line creates a new BinaryFormatter
         // A binary formatter is used to serialize and deserialize data
         BinaryFormatter bf = new BinaryFormatter();
+        if (bf == null)
+        {
+            Debug.Log("BinaryFormatter is null");
+            return;
+        }
 
         // This line creates a new FileStream
         // A file stream is used to read and write data to a file
         FileStream file = File.Create(Application.persistentDataPath + "/playerInfo.dat");
-
+        
+        if (file == null)
+        {
+            Debug.Log("File is null");
+            return;
+        }
         // This line creates a new PlayerData object
         // This object will hold the data we want to save
-        PlayerData data = new PlayerData();
 
         // This line sets the data in the PlayerData object
         data.score = score;
