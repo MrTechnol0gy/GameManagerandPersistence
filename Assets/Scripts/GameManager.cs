@@ -7,8 +7,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager get;
 
+    private void Awake()
+    {
+        get = this;
+    }
     // Goes to the Main Menu scene
-    public void GoToMainMenu()
+    public void LoadMainMenu()
     {
         // if the current scene is already the main menu, do nothing
         if (SceneManager.GetActiveScene().name == "MainMenu")
@@ -21,7 +25,7 @@ public class GameManager : MonoBehaviour
         }
     }
     // Goes to the Level One Scene
-    public void GoToLevelOne()
+    public void LoadLevel1()
     {
         // if the current scene is already level one, do nothing
         if (SceneManager.GetActiveScene().name == "LevelOne")
@@ -34,7 +38,7 @@ public class GameManager : MonoBehaviour
         }
     }
     // Goes to the Level Two Scene
-    public void GoToLevelTwo()
+    public void LoadLevel2()
     {
         // if the current scene is already level two, do nothing
         if (SceneManager.GetActiveScene().name == "LevelTwo")
@@ -47,7 +51,7 @@ public class GameManager : MonoBehaviour
         }
     }
     // Goes to the Level Three Scene
-    public void GoToLevelThree()
+    public void LoadLevel3()
     {
         // if the current scene is already level three, do nothing
         if (SceneManager.GetActiveScene().name == "LevelThree")

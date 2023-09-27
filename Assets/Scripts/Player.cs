@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         }
     }
     // increases the speed by 0.5f
-    public void IncreaseSpeed()
+    public void IncrementSpeed()
     {
         speed += 0.5f;
         if (OnSpeedChange != null)
@@ -113,7 +113,7 @@ public class Player : MonoBehaviour
         }
     }
     // decreases the speed by 0.5f
-    public void DecreaseSpeed()
+    public void DecrementSpeed()
     {
         speed -= 0.5f;
         if (OnSpeedChange != null)
