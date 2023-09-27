@@ -43,7 +43,7 @@ public class UIManager : MonoBehaviour
     }
 
     private void Start()
-    {
+    {        
         //Debug.Log("UIManager Start");
         sceneObjects = GameObject.Find("SceneObjects");
         // find and assign each UI text element
@@ -75,6 +75,16 @@ public class UIManager : MonoBehaviour
 
         // set the buttons
         SetButtons();
+    }
+
+    private void Update()
+    {
+        // Update All UI Text
+        UpdateScore();
+        UpdateGold();
+        UpdateHealth();
+        UpdateLives();
+        UpdateSpeed();
     }
 
     // Subscribes to the OnChange events
