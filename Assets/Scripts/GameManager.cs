@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         else
-        {
+        {            
             SceneManager.LoadScene("MainMenu");
         }
     }

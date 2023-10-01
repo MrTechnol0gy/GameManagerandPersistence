@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -44,8 +45,57 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {        
+        // Listener for when the a new scene is loaded
+        // SceneManager.sceneLoaded += OnSceneLoaded;
+
         //Debug.Log("UIManager Start");
         sceneObjects = GameObject.Find("SceneObjects");
+
+        // find and assign each UI text element
+        AssignUITextElements();
+
+        // find and assign each UI button
+        AssignUIButtons();
+
+        // set the buttons
+        SetButtons();
+    }
+
+    private void Update()
+    {
+        // Update All UI Text
+        UpdateScore();
+        UpdateGold();
+        UpdateHealth();
+        UpdateLives();
+        UpdateSpeed();        
+    }
+
+    // Subscribes to the OnChange events
+    private void OnEnable()
+    {
+        Debug.Log("UIManager OnEnable");
+        Player.OnScoreChange += UpdateScore;
+        Player.OnGoldChange += UpdateGold;
+        Player.OnHealthChange += UpdateHealth;
+        Player.OnLivesChange += UpdateLives;
+        Player.OnSpeedChange += UpdateSpeed;
+    }
+
+    // Unsubscribes from the OnChange events
+    public void OnDisable()
+    {
+        Debug.Log("UIManager OnDisable");
+        Player.OnScoreChange -= UpdateScore;
+        Player.OnGoldChange -= UpdateGold;
+        Player.OnHealthChange -= UpdateHealth;
+        Player.OnLivesChange -= UpdateLives;
+        Player.OnSpeedChange -= UpdateSpeed;
+    }
+
+    // When a new scene is loaded, find the UI text elements
+    private void AssignUITextElements()
+    {
         // find and assign each UI text element
         scoreText = GameObject.Find("Score").GetComponent<TextMeshProUGUI>();
         goldText = GameObject.Find("Gold").GetComponent<TextMeshProUGUI>();
@@ -53,7 +103,10 @@ public class UIManager : MonoBehaviour
         livesText = GameObject.Find("Lives").GetComponent<TextMeshProUGUI>();
         speedText = GameObject.Find("Speed").GetComponent<TextMeshProUGUI>();
         saveTimeText = GameObject.Find("Save Time").GetComponent<TextMeshProUGUI>();
+    }
 
+    private void AssignUIButtons()
+    {
         // find and assign each UI button
         saveButton = sceneObjects.transform.Find("Canvas/MainMenuPanel/Save Game").GetComponent<Button>();
         loadButton = sceneObjects.transform.Find("Canvas/MainMenuPanel/Load Game").GetComponent<Button>();
@@ -72,39 +125,24 @@ public class UIManager : MonoBehaviour
         livesDecrementButton = sceneObjects.transform.Find("Canvas/MainMenuPanel/PlayerButtons/Decrement Lives").GetComponent<Button>();
         goldDecrementButton = sceneObjects.transform.Find("Canvas/MainMenuPanel/PlayerButtons/Decrement Gold").GetComponent<Button>();
         scoreDecrementButton = sceneObjects.transform.Find("Canvas/MainMenuPanel/PlayerButtons/Decrement Score").GetComponent<Button>();
+    }
+
+    // When a new scene is loaded, drop the previous UI assignments and reassign them
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        Debug.Log("Reconnect");
+
+        // find the new scene objects
+        sceneObjects = GameObject.Find("SceneObjects");
+
+        // find and assign each UI text element
+        AssignUITextElements();
+
+        // find and assign each UI button
+        AssignUIButtons();
 
         // set the buttons
-        SetButtons();
-    }
-
-    private void Update()
-    {
-        // Update All UI Text
-        UpdateScore();
-        UpdateGold();
-        UpdateHealth();
-        UpdateLives();
-        UpdateSpeed();
-    }
-
-    // Subscribes to the OnChange events
-    private void OnEnable()
-    {
-        Player.OnScoreChange += UpdateScore;
-        Player.OnGoldChange += UpdateGold;
-        Player.OnHealthChange += UpdateHealth;
-        Player.OnLivesChange += UpdateLives;
-        Player.OnSpeedChange += UpdateSpeed;
-    }
-
-    // Unsubscribes from the OnChange events
-    private void OnDisable()
-    {
-        Player.OnScoreChange -= UpdateScore;
-        Player.OnGoldChange -= UpdateGold;
-        Player.OnHealthChange -= UpdateHealth;
-        Player.OnLivesChange -= UpdateLives;
-        Player.OnSpeedChange -= UpdateSpeed;
+        SetButtons();      
     }
 
     // Sets the buttons
