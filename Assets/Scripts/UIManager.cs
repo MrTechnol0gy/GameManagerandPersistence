@@ -16,6 +16,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI livesText;
     public TextMeshProUGUI speedText;
     public TextMeshProUGUI saveTimeText;
+    public TextMeshProUGUI instanceCountText;
 
     // References to the UI buttons
     public Button saveButton;
@@ -44,11 +45,8 @@ public class UIManager : MonoBehaviour
     }
 
     private void Start()
-    {        
-        // Listener for when the a new scene is loaded
-        // SceneManager.sceneLoaded += OnSceneLoaded;
-
-        //Debug.Log("UIManager Start");
+    {     
+        // find the new scene objects
         sceneObjects = GameObject.Find("SceneObjects");
 
         // find and assign each UI text element
@@ -68,7 +66,8 @@ public class UIManager : MonoBehaviour
         UpdateGold();
         UpdateHealth();
         UpdateLives();
-        UpdateSpeed();        
+        UpdateSpeed();   
+        UpdateInstanceCount();     
     }
 
     // Subscribes to the OnChange events
@@ -103,6 +102,7 @@ public class UIManager : MonoBehaviour
         livesText = GameObject.Find("Lives").GetComponent<TextMeshProUGUI>();
         speedText = GameObject.Find("Speed").GetComponent<TextMeshProUGUI>();
         saveTimeText = GameObject.Find("Save Time").GetComponent<TextMeshProUGUI>();
+        instanceCountText = GameObject.Find("Instance Count").GetComponent<TextMeshProUGUI>();
     }
 
     private void AssignUIButtons()
@@ -229,6 +229,19 @@ public class UIManager : MonoBehaviour
         else
         {
             Debug.Log("Speed Text is null");
+        }
+    }
+
+    // Updates the instance count text
+    public void UpdateInstanceCount()
+    {
+        if (instanceCountText != null)
+        {
+            instanceCountText.text = "Instance Count: " + GameManager.get.GetInstanceCount();
+        }
+        else
+        {
+            Debug.Log("Instance Count Text is null");
         }
     }
 

@@ -6,10 +6,12 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager get;
-
+    public static int instanceCount = 0;
     private void Awake()
     {
         get = this;
+        instanceCount++;
+        Debug.Log("Instance Count is " + instanceCount);
     }
     // Goes to the Main Menu scene
     public void LoadMainMenu()
@@ -92,6 +94,12 @@ public class GameManager : MonoBehaviour
         Player.get.gold = playerData.gold;
         Player.get.speed = playerData.speed;
         
+    }
+
+    // Returns the instance count
+    public int GetInstanceCount()
+    {
+        return instanceCount;
     }
     // Quits the application
     public void QuitGame()
