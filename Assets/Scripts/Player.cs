@@ -28,7 +28,17 @@ public class Player : MonoBehaviour
     
     private void Awake()
     {
-        get = this;
+        // Singleton
+        if (get == null)
+        {
+            get = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+            return;
+        }
     }
     
     // increments the score by 1

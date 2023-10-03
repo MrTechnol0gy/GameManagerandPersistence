@@ -13,7 +13,17 @@ public class SaveGameManager : MonoBehaviour
 
     private void Awake()
     {
-        get = this;
+        // Singleton
+        if (get == null)
+        {
+            get = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+            return;
+        }
 
         // This line creates a new PlayerData object
         // This object will hold the data we want to save

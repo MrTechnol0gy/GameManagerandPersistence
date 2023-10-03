@@ -9,7 +9,17 @@ public class GameManager : MonoBehaviour
     public static int instanceCount = 0;
     private void Awake()
     {
-        get = this;
+        // Singleton
+        if (get == null)
+        {
+            get = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         instanceCount++;
         Debug.Log("Instance Count is " + instanceCount);
     }

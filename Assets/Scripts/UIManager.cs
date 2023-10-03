@@ -40,8 +40,18 @@ public class UIManager : MonoBehaviour
     private GameObject sceneObjects;
     private void Awake()
     {
-        get = this;
-        //Debug.Log("UIManager Awake");
+        // Singleton
+        if (get == null)
+        {
+            get = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        
     }
 
     private void Start()
@@ -57,6 +67,9 @@ public class UIManager : MonoBehaviour
 
         // set the buttons
         SetButtons();
+
+        // Subscribe to the OnChange events
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void Update()
@@ -105,6 +118,18 @@ public class UIManager : MonoBehaviour
         instanceCountText = GameObject.Find("Instance Count").GetComponent<TextMeshProUGUI>();
     }
 
+    private void ClearUITextElements()
+    {
+        // find and assign each UI text element
+        scoreText = null;
+        goldText = null;
+        healthText = null;
+        livesText = null;
+        speedText = null;
+        saveTimeText = null;
+        instanceCountText = null;
+    }
+
     private void AssignUIButtons()
     {
         // find and assign each UI button
@@ -127,14 +152,48 @@ public class UIManager : MonoBehaviour
         scoreDecrementButton = sceneObjects.transform.Find("Canvas/MainMenuPanel/PlayerButtons/Decrement Score").GetComponent<Button>();
     }
 
+    // Clear the UI buttons
+    private void ClearUIButtons()
+    {
+        // find and assign each UI button
+        saveButton = null;
+        loadButton = null;
+        quitButton = null;
+        mainMenuButton = null;
+        level1Button = null;
+        level2Button = null;
+        level3Button = null;
+        healthIncrementButton = null;
+        speedIncrementButton = null;
+        livesIncrementButton = null;
+        goldIncrementButton = null;
+        scoreIncrementButton = null;
+        healthDecrementButton = null;
+        speedDecrementButton = null;
+        livesDecrementButton = null;
+        goldDecrementButton = null;
+        scoreDecrementButton = null;
+    }
+
     // When a new scene is loaded, drop the previous UI assignments and reassign them
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        Debug.Log("Reconnect");
+        Debug.Log("Disconnecting UI Events");
+
+        // clear the UI text elements
+        ClearUITextElements();
+
+        // clear the UI buttons
+        ClearUIButtons();
+
+        // clear the buttons
+        ClearUIButtons();
 
         // find the new scene objects
+        Debug.Log("Finding Scene Objects");
         sceneObjects = GameObject.Find("SceneObjects");
 
+        Debug.Log("Reconnecting");
         // find and assign each UI text element
         AssignUITextElements();
 
@@ -165,6 +224,28 @@ public class UIManager : MonoBehaviour
         level3Button.onClick.AddListener(GameManager.get.LoadLevel3);
         saveButton.onClick.AddListener(GameManager.get.SaveGame);
         loadButton.onClick.AddListener(GameManager.get.LoadGame);
+    }
+
+    // Clears the buttons
+    private void ClearButtons()
+    {
+        healthIncrementButton.onClick.RemoveAllListeners();
+        speedIncrementButton.onClick.RemoveAllListeners();
+        livesIncrementButton.onClick.RemoveAllListeners();
+        goldIncrementButton.onClick.RemoveAllListeners();
+        scoreIncrementButton.onClick.RemoveAllListeners();
+        healthDecrementButton.onClick.RemoveAllListeners();
+        speedDecrementButton.onClick.RemoveAllListeners();
+        livesDecrementButton.onClick.RemoveAllListeners();
+        goldDecrementButton.onClick.RemoveAllListeners();
+        scoreDecrementButton.onClick.RemoveAllListeners();        
+        mainMenuButton.onClick.RemoveAllListeners();
+        quitButton.onClick.RemoveAllListeners();
+        level1Button.onClick.RemoveAllListeners();
+        level2Button.onClick.RemoveAllListeners();
+        level3Button.onClick.RemoveAllListeners();
+        saveButton.onClick.RemoveAllListeners();
+        loadButton.onClick.RemoveAllListeners();
     }
 
     // Updates the score text
